@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+  mariaDb:
+    build:
+      context: ./requirements/mariaDb
+      dockerfile: Dockerfile
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
