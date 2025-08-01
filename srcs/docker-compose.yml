@@ -23,7 +23,7 @@ services:
       context: ./requirements/nginx
       dockerfile: Dockerfile
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost"]
+      test: ["CMD", "wget", "--spider", "-q", "https://localhost"]
       interval: 10s
       timeout: 3s
       retries: 3
