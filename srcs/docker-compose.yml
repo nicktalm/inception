@@ -5,13 +5,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: "/Users/${USER}/data/mariadb"
+      device: "/Users/${USER}/data/_mariadb"
       o: bind
   wordpress:
     driver: local
     driver_opts:
       type: none
-      device: "/Users/${USER}/data/wordpress"
+      device: "/Users/${USER}/data/_wordpress"
       o: bind
 
 networks:
@@ -23,12 +23,7 @@ services:
     build: requirements/nginx/.
     container_name: nginx
     ports:
-      - "80:80"
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "https://localhost"]
-      interval: 10s
-      timeout: 3s
-      retries: 3
+      - "443:443"
     depends_on:
       wordpress:
         condition: service_healthy

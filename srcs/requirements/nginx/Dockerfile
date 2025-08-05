@@ -5,7 +5,7 @@ RUN apt update && apt upgrade && apt install -y \
 	openssl \
 	curl
 
-COPY conf/nginx.conf /etc/nginx/sites-available/.
+COPY conf/nginx.conf /etc/nginx/
 COPY ./conf/start_nginx.sh .
 
 RUN chmod +x start_nginx.sh
