@@ -8,6 +8,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 COPY www.conf /etc/php/8.2/fpm/pool.d/.
 COPY conf/wordpress.sh .
 
-RUN chmod +x conf/wordpress.sh
+RUN chmod +x wordpress.sh
 
 CMD ["./wordpress.sh"]

@@ -1,8 +1,13 @@
 FROM debian:12
 
 RUN apt update && apt upgrade && apt install -y \
-	nginx
+	nginx \
+	openssl \
+	curl
 
-COPY default /etc/nginx/sites-available/.
+COPY conf/nginx.conf /etc/nginx/sites-available/.
+COPY ./conf/start_nginx.sh .
 
-CMD ["nginx", "-g", "daemon off;"]
+RUN chmod +x start_nginx.sh
+
+CMD ["./start_nginx.sh"]

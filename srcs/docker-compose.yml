@@ -1,66 +1,44 @@
 version: '3.8'
 
-networks:
-  inception_network:
-
 volumes:
   db:
     driver: local
     driver_opts:
       type: none
-      device: "/Users/${USER}/data"
+      device: "/Users/${USER}/data/mariadb"
       o: bind
   wordpress:
     driver: local
     driver_opts:
       type: none
-      device: "/Users/${USER}/data"
+      device: "/Users/${USER}/data/wordpress"
       o: bind
+
+networks:
+  inception:
+
 
 services:
   nginx:
-    build:
-      context: ./requirements/nginx
-      dockerfile: Dockerfile
+    build: requirements/nginx/.
+    container_name: nginx
+    ports:
+      - "80:80"
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "https://localhost"]
       interval: 10s
       timeout: 3s
       retries: 3
-    # depends_on:
-    #   wordpress:
-    #     condition: service_healthy
-    ports:
-      - "443:443"
+    depends_on:
+      wordpress:
+        condition: service_healthy
     volumes:
-      - wordpress:/usr/share/nginx/html
+      - wordpress:/var/www/html
     networks:
-      - inception_network
-
-  mariadb:
-    build:
-      context: ./requirements/mariadb
-      dockerfile: Dockerfile
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - db:/var/lib/mysql
-    networks:
-      - inception_network
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-
-
+      inception:
   wordpress:
-    build:
-      context: ./requirements/wordpress
-      dockerfile: Dockerfile
+    build: requirements/wordpress/.
+    container_name: wp-php
     healthcheck:
       test: ["CMD", "pgrep", "php-fpm"]
       interval: 10s
@@ -72,4 +50,16 @@ services:
     volumes:
       - wordpress:/var/www/html
     networks:
-      - inception_network
+      inception:
+  mariadb:
+    build: requirements/mariadb/.
+    container_name: mariadb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      inception:

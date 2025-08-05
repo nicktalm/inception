@@ -24,5 +24,7 @@ chmod +x wp-cli.phar
 		--role=author \
 		--path=/var/www/html/ \
 		--allow-root
+./wp-cli.phar theme activate twentytwentyfour \
+		--allow-root
 
 php-fpm8.2 -F
