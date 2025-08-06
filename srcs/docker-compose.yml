@@ -5,13 +5,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: "/Users/${USER}/data/_mariadb"
+      device: "/Users/${USER}/data/mariadb"
       o: bind
   wordpress:
     driver: local
     driver_opts:
       type: none
-      device: "/Users/${USER}/data/_wordpress"
+      device: "/Users/${USER}/data/wordpress"
       o: bind
 
 networks:

@@ -17,22 +17,32 @@
 	./wp-cli.phar core download \
 			--allow-root
 	./wp-cli.phar config create \
-			--dbname=wordpress \
-			--dbuser=wpuser \
-			--dbpass=password \
-			--dbhost=mariadb \
+			--dbname=$mariadb \
+			--dbuser=$maria_db_user \
+			--dbpass=$maria_db_password \
+			--dbhost="mariadb" \
 			--allow-root
+			
+	# Debugging
+	echo "Admin-Benutzername: $WORDPRESS_ADMIN_USER"
+
+	# Bedingung für Admin-Benutzernamen
+	if [[ $WORDPRESS_ADMIN_USER == *admin* || $WORDPRESS_ADMIN_USER == *Admin* ]]; then
+		echo "Der Admin-Benutzername darf nicht 'admin' oder 'Admin' enthalten."
+		exit 1
+	fi
+
 	./wp-cli.phar core install \
 			--url=localhost \
 			--title=inception \
-			--admin_user=admin \
-			--admin_password=admin \
-			--admin_email=admin@admin.com \
+			--admin_user=$WORDPRESS_ADMIN_USER \
+			--admin_password=$WORDPRESS_ADMIN_PASSWORD \
+			--admin_email=$WORDPRESS_ADMIN_EMAIL \
 			--allow-root
 	./wp-cli.phar user create \
-			lasernick \
-			lasernick@laser.com \
-			--user_pass=megalaser \
+			$WORDPRESS_TEST_USER \
+			$WORDPRESS_TEST_USER_EMAIL \
+			--user_pass=$WORDPRESS_TEST_USER_PASSWORD \
 			--role=author \
 			--path=/var/www/html/ \
 			--allow-root
