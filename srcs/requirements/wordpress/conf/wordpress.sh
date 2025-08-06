@@ -4,6 +4,8 @@
 
 	rm -rf /var/www/html/*
 
+	chown -R www-data:www-data /var/www/html
+
 	wget https://wordpress.org/latest.tar.gz
 	tar -xzf latest.tar.gz
 	mv wordpress/* /var/www/html/

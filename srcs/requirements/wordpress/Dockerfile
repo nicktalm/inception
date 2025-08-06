@@ -4,9 +4,10 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 	php-fpm \
 	php-mysqli \
 	curl \
-	wget
+	wget \
+	php-gd
 
-COPY www.conf /etc/php/8.2/fpm/pool.d/.
+COPY conf/www.conf /etc/php/8.2/fpm/pool.d/.
 COPY conf/wordpress.sh .
 
 RUN chmod +x wordpress.sh
