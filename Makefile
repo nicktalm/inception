@@ -11,8 +11,8 @@ all: up
 
 up:
 	@printf "$(GREEN)Starting $(NAME) containers...$(RESET)\n"
-	@ls /home/$(USER)/data/mariadb || mkdir -p /home/$(USER)/data/mariadb
-	@ls /home/$(USER)/data/wordpress ||mkdir -p /home/$(USER)/data/wordpress
+	@ls /Users/$(USER)/data/mariadb || mkdir -p /Users/$(USER)/data/mariadb
+	@ls /Users/$(USER)/data/wordpress ||mkdir -p /Users/$(USER)/data/wordpress
 	@$(DOCKER_COMPOSE) up -d
 	@printf "$(GREEN)Containers are running!$(RESET)\n"
 
@@ -26,11 +26,17 @@ down:
 	@$(DOCKER_COMPOSE) down
 	@printf "$(GREEN)Containers stopped!$(RESET)\n"
 
-rebuild: down
+rebuild:
+	@printf "$(RED)Fully cleaning $(NAME) project (containers, images, volumes)...$(RESET)\n"
+	@$(DOCKER_COMPOSE) down --volumes --remove-orphans
+	@docker system prune -a --volumes --force
+	@rm -rf /Users/$(USER)/data/mariadb /Users/$(USER)/data/wordpress
+	@mkdir -p /Users/$(USER)/data/mariadb /Users/$(USER)/data/wordpress
 	@printf "$(YELLOW)Rebuilding $(NAME) containers...$(RESET)\n"
 	@$(DOCKER_COMPOSE) build --no-cache
 	@$(DOCKER_COMPOSE) up -d
 	@printf "$(GREEN)Rebuild complete!$(RESET)\n"
+
 
 clean: down
 	@printf "$(RED)Removing all containers and images...$(RESET)\n"

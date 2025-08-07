@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# if [ ! -f /var/www/html/wp-config.php ]; then
+# Warte auf die Datenbank
+until mysql -h mariadb -u"$MARIADB_USER" -p"$MARIADB_PASSWORD" -e "SHOW DATABASES;" > /dev/null 2>&1; do
+	echo "Waiting for MariaDB to be ready..."
+	sleep 2
+done
 
+# if [ ! -f /var/www/html/wp-config.php ]; then
 	rm -rf /var/www/html/*
 
 	chown -R www-data:www-data /var/www/html
@@ -15,9 +20,6 @@
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 	chmod +x wp-cli.phar
 
-	# Entferne den Download – du hast WordPress ja schon entpackt
-	# ./wp-cli.phar core download --allow-root
-
 	./wp-cli.phar config create \
 		--dbname=$MARIADB_DATABASE \
 		--dbuser=$MARIADB_USER \
@@ -25,7 +27,6 @@
 		--dbhost="mariadb" \
 		--allow-root
 
-	# Debugging
 	echo "Admin-Benutzername: $WORDPRESS_ADMIN_USER"
 
 	if [[ $WORDPRESS_ADMIN_USER == *admin* || $WORDPRESS_ADMIN_USER == *Admin* ]]; then
@@ -50,7 +51,6 @@
 		--allow-root
 
 	./wp-cli.phar theme activate twentytwentyfour --allow-root
-
 # fi
 
 php-fpm8.2 -F
