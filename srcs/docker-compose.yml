@@ -23,7 +23,7 @@ services:
     ports:
       - "443:443"
     depends_on:
-      wordpress:
+      mariadb:
         condition: service_healthy
     volumes:
       - wordpress:/var/www/html
@@ -37,7 +37,7 @@ services:
       timeout: 5s
       retries: 3
     depends_on:
-      mariadb:
+      nginx:
         condition: service_healthy
     volumes:
       - wordpress:/var/www/html
