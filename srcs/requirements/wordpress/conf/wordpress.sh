@@ -16,12 +16,13 @@
 	chmod +x wp-cli.phar
 	./wp-cli.phar core download \
 			--allow-root
-	./wp-cli.phar config create \
-			--dbname=$mariadb \
-			--dbuser=$maria_db_user \
-			--dbpass=$maria_db_password \
+	/wp-cli.phar config create \
+			--dbname=$MARIADB_DATABASE \
+			--dbuser=$MARIADB_USER \
+			--dbpass=$MARIADB_PASSWORD \
 			--dbhost="mariadb" \
 			--allow-root
+
 			
 	# Debugging
 	echo "Admin-Benutzername: $WORDPRESS_ADMIN_USER"
