@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# if [ ! -f /var/www/html/wp-config.php ]; then
+if [ ! -f /var/www/html/wp-config.php ]; then
 
 	rm -rf /var/www/html/*
 
@@ -48,6 +48,6 @@
 			--allow-root
 	./wp-cli.phar theme activate twentytwentyfour \
 			--allow-root
-# fi
+fi
 
 php-fpm8.2 -F

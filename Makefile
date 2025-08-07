@@ -19,16 +19,16 @@ build:
 	@$(DOCKER_COMPOSE) build
 	@printf "$(GREEN)Build complete!$(RESET)\n"
 
+down:
+	@printf "$(YELLOW)Stopping $(NAME) containers...$(RESET)\n"
+	@$(DOCKER_COMPOSE) down
+	@printf "$(GREEN)Containers stopped!$(RESET)\n"
+
 rebuild: down
 	@printf "$(YELLOW)Rebuilding $(NAME) containers...$(RESET)\n"
 	@$(DOCKER_COMPOSE) build --no-cache
 	@$(DOCKER_COMPOSE) up -d
 	@printf "$(GREEN)Rebuild complete!$(RESET)\n"
-
-down:
-	@printf "$(YELLOW)Stopping $(NAME) containers...$(RESET)\n"
-	@$(DOCKER_COMPOSE) down
-	@printf "$(GREEN)Containers stopped!$(RESET)\n"
 
 clean: down
 	@printf "$(RED)Removing all containers and images...$(RESET)\n"
