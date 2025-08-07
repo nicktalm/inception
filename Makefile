@@ -9,10 +9,10 @@ RESET = \033[0m
 
 all: up
 
+# @ls /Users/$(USER)/data/mariadb || mkdir -p /Users/$(USER)/data/mariadb
+# @ls /Users/$(USER)/data/wordpress ||mkdir -p /Users/$(USER)/data/wordpress
 up:
 	@printf "$(GREEN)Starting $(NAME) containers...$(RESET)\n"
-	@ls /home/$(USER)/data/mariadb || mkdir -p /home/$(USER)/data/mariadb
-	@ls /home/$(USER)/data/wordpress ||mkdir -p /home/$(USER)/data/wordpress
 	@$(DOCKER_COMPOSE) up -d
 	@printf "$(GREEN)Containers are running!$(RESET)\n"
 
@@ -30,8 +30,8 @@ rebuild:
 	@printf "$(RED)Fully cleaning $(NAME) project (containers, images, volumes)...$(RESET)\n"
 	@$(DOCKER_COMPOSE) down --volumes --remove-orphans
 	@docker system prune -a --volumes --force
-	@rm -rf /home/$(USER)/data/mariadb /home/$(USER)/data/wordpress
-	@mkdir -p /home/$(USER)/data/mariadb /home/$(USER)/data/wordpress
+	@rm -rf /Users/$(USER)/data/mariadb /Users/$(USER)/data/wordpress
+	@mkdir -p /Users/$(USER)/data/mariadb /Users/$(USER)/data/wordpress
 	@printf "$(YELLOW)Rebuilding $(NAME) containers...$(RESET)\n"
 	@$(DOCKER_COMPOSE) build --no-cache
 	@$(DOCKER_COMPOSE) up -d
@@ -51,5 +51,14 @@ restart:
 	@printf "$(YELLOW)Restarting containers...$(RESET)\n"
 	@$(DOCKER_COMPOSE) restart
 	@printf "$(GREEN)Containers restarted!$(RESET)\n"
+
+fclean1:
+	@printf "Complete clearning of all docker configuration ... \n"
+	@docker stop $$(docker ps -qa);\
+	docker system prune -a ;\
+	docker system prune --all --force --volumes;\
+	docker network prune --force;\
+	docker volume rm srcs_db-volume;\
+	docker volume rm srcs_wp-volume;
 
 .PHONY: all up build rebuild down clean logs restart
