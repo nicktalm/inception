@@ -1,6 +1,6 @@
 NAME = inception
 COMPOSE_FILE = srcs/docker-compose.yml
-DOCKER_COMPOSE = cd srcs && docker compose -p $(NAME) -f docker-compose.yml
+DOCKER_COMPOSE = cd srcs && docker compose $(NAME) -f docker-compose.yml
 
 GREEN = \033[0;32m
 YELLOW = \033[0;33m
