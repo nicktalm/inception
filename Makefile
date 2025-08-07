@@ -11,8 +11,8 @@ all: up
 
 up:
 	@printf "$(GREEN)Creating volume directories...$(RESET)\n"
-	@mkdir /home/$(USER)/data/mariadb
-	@mkdir /home/$(USER)/data/wordpress
+	@ls /home/$(USER)/data/mariadb || mkdir /home/$(USER)/data/mariadb
+	@ls /home/$(USER)/data/wordpress || mkdir /home/$(USER)/data/wordpress
 	@printf "$(GREEN)Starting $(NAME) containers...$(RESET)\n"
 	@$(DOCKER_COMPOSE) up -d
 	@printf "$(GREEN)Containers are running!$(RESET)\n"
