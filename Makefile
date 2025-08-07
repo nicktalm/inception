@@ -10,9 +10,13 @@ RESET = \033[0m
 all: up
 
 up:
+	@printf "$(GREEN)Creating volume directories...$(RESET)\n"
+	@mkdir -p /home/$(USER)/data/mariadb
+	@mkdir -p /home/$(USER)/data/wordpress
 	@printf "$(GREEN)Starting $(NAME) containers...$(RESET)\n"
 	@$(DOCKER_COMPOSE) up -d
 	@printf "$(GREEN)Containers are running!$(RESET)\n"
+
 
 build:
 	@printf "$(YELLOW)Building $(NAME) containers...$(RESET)\n"
