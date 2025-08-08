@@ -1,12 +1,10 @@
 FROM debian:bullseye
 
-RUN apt-get update && apt-get install -y \
-	mariadb-server
+RUN apt-get update && apt-get install -y mariadb-server mariadb-client
 
-COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/.
-COPY conf/init.sql /etc/mysql/init.sql
-COPY conf/start_mariadb.sh .
+# Copy the startup script
+COPY conf/start_mariadb.sh /
+RUN chmod +x /start_mariadb.sh
 
-RUN mkdir /run/mysqld && chmod +x start_mariadb.sh
-
-CMD ["./start_mariadb.sh"]
+# Set the startup script as the entry point
+ENTRYPOINT [ "sh", "/start_mariadb.sh"]
