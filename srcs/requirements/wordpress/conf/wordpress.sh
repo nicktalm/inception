@@ -53,4 +53,6 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 	./wp-cli.phar theme activate twentytwentyfour --allow-root
 fi
 
-php-fpm8.2 -F
+sed -i 's/listen = .*/listen = 0.0.0.0:9000/' /etc/php/7.4/fpm/pool.d/www.conf
+
+php-fpm7.4 -F

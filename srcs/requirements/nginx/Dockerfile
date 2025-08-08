@@ -1,6 +1,6 @@
-FROM debian:12
+FROM debian:bullseye
 
-RUN apt update && apt upgrade && apt install -y \
+RUN apt-get update && apt-get install -y \
 	nginx \
 	openssl \
 	curl

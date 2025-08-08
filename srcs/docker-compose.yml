@@ -2,24 +2,26 @@ version: '3.8'
 
 volumes:
   db:
-    driver: local
-    driver_opts:
-      type: none
-      device: "~/home/${USER}/data/mariadb"
-      o: bind
+    # driver: local
+    # driver_opts:
+      # type: none
+      # device: "~/home/${USER}/data/mariadb"
+      # o: bind
   wordpress:
-    driver: local
-    driver_opts:
-      type: none
-      device: "~/home/${USER}/data/wordpress"
-      o: bind
+    # driver: local
+    # driver_opts:
+      # type: none
+      # device: "~/home/${USER}/data/wordpress"
+      # o: bind
 
 networks:
   inception:
 
 services:
   nginx:
-    build: requirements/nginx/.
+    build:
+      context : requirements/nginx
+      dockerfile: Dockerfile
     ports:
       - "443:443"
     depends_on:
@@ -28,9 +30,11 @@ services:
     volumes:
       - wordpress:/var/www/html
     networks:
-      inception:
+      - inception
   wordpress:
-    build: requirements/wordpress/.
+    build:
+      context : requirements/wordpress
+      dockerfile : Dockerfile
     healthcheck:
       test: ["CMD", "pgrep", "php-fpm"]
       interval: 10s
@@ -42,7 +46,7 @@ services:
     volumes:
       - wordpress:/var/www/html
     networks:
-      inception:
+      - inception
     environment:
       - MARIADB_DATABASE=${MARIADB_DATABASE}
       - MARIADB_USER=${MARIADB_USER}
@@ -54,7 +58,9 @@ services:
       - WORDPRESS_TEST_USER_PASSWORD=${WORDPRESS_TEST_USER_PASSWORD}
       - WORDPRESS_TEST_USER_EMAIL=${WORDPRESS_TEST_USER_EMAIL}
   mariadb:
-    build: requirements/mariadb/.
+    build:
+      context : requirements/mariadb
+      dockerfile : Dockerfile
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -63,7 +69,7 @@ services:
     volumes:
       - db:/var/lib/mysql
     networks:
-      inception:
+      - inception
     environment:
       - MARIADB_DATABASE=${MARIADB_DATABASE}
       - MARIADB_USER=${MARIADB_USER}
