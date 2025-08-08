@@ -1,5 +1,6 @@
 up:
 	@cd srcs && docker compose up -d
+	@ls /home/$(USER)/data || mkdir /home/$(USER)/data
 	@ls /home/$(USER)/data/mariadb || mkdir /home/$(USER)/data/mariadb
 	@ls /home/$(USER)/data/wordpress || mkdir /home/$(USER)/data/wordpress
 down:
