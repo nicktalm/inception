@@ -2,17 +2,17 @@ version: '3.8' # Specify the Docker Compose version
 
 volumes:
   db: # Volume for MariaDB data persistence
-    # driver: local
-    # driver_opts:
-    #   type: none
-    #   device: "~/data/mariadb" # Bind to local directory for MariaDB data
-    #   o: bind
+    driver: local
+    driver_opts:
+      type: none
+      device: "~/data/mariadb" # Bind to local directory for MariaDB data
+      o: bind
   wordpress: # Volume for WordPress data persistence
-    # driver: local
-    # driver_opts:
-    #   type: none
-    #   device: "~/data/wordpress" # Bind to local directory for WordPress data
-    #   o: bind
+    driver: local
+    driver_opts:
+      type: none
+      device: "~/data/wordpress" # Bind to local directory for WordPress data
+      o: bind
 
 networks:
   inception: # Define a custom network for the services
