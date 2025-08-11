@@ -3,6 +3,7 @@
 DB_NAME=${MARIADB_DATABASE:-wordpress_db}
 DB_USER=${MARIADB_USER:-wordpress_user}
 DB_PASSWORD=${MARIADB_PASSWORD:-wordpress_password}
+DB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root_password}
 
 # Initialize the database if it doesn't exist
 if [ ! -d "/var/lib/mysql/mysql" ]; then
