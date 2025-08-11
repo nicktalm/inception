@@ -19,6 +19,7 @@ networks:
 
 services:
   nginx:
+    container_name: nginx
     build:
       context : requirements/nginx
       dockerfile: Dockerfile
@@ -32,6 +33,7 @@ services:
     networks:
       - inception
   wordpress:
+    container_name: wordpress
     build:
       context : requirements/wordpress
       dockerfile : Dockerfile
@@ -58,6 +60,7 @@ services:
       - WORDPRESS_TEST_USER_PASSWORD=${WORDPRESS_TEST_USER_PASSWORD}
       - WORDPRESS_TEST_USER_EMAIL=${WORDPRESS_TEST_USER_EMAIL}
   mariadb:
+    container_name: mariadb
     build:
       context : requirements/mariadb
       dockerfile : Dockerfile
