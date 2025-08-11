@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # Check if required environment variables are set
-if [ -z "$DB_ROOT_PASSWORD" ] || [ -z "$DB_NAME" ] || [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ]; then
+if [ -z "$MARIADB_DATABASE" ] || [ -z "$MARIADB_USER" ] || [ -z "$MARIADB_PASSWORD" ] || \
+   [ -z "$WORDPRESS_ADMIN_USER" ] || [ -z "$WORDPRESS_ADMIN_PASSWORD" ] || [ -z "$WORDPRESS_ADMIN_EMAIL" ] || \
+   [ -z "$WORDPRESS_TEST_USER" ] || [ -z "$WORDPRESS_TEST_USER_PASSWORD" ] || [ -z "$WORDPRESS_TEST_USER_EMAIL" ]; then
 	echo "Error: Required environment variables are not set."
 	exit 1
 fi
