@@ -10,8 +10,8 @@ restart: down up
 
 fclean:
 	@cd srcs && docker compose down --rmi all --volumes
-	@docker network prune -f
-	@ls ~/data && rm -rf ~/data
+	@ls ~/data && sudo rm -rf ~/data
+	@sudo docker network prune -f
 
 re: fclean
 	@cd srcs && docker compose up -d --remove-orphans --force-recreate
