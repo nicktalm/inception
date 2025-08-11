@@ -1,8 +1,8 @@
 up:
-	@cd srcs && docker compose up -d
 	@ls ~/data || mkdir ~/data
 	@ls ~/data/mariadb || mkdir ~/data/mariadb
 	@ls ~/data/wordpress || mkdir ~/data/wordpress
+	@cd srcs && docker compose up -d
 down:
 	@cd srcs && docker compose down
 
