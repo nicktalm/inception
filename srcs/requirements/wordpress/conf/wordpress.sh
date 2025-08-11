@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# # Warte auf die Datenbank
-# until mysql -h mariadb -u"$MARIADB_USER" -p"$MARIADB_PASSWORD" -e "SHOW DATABASES;" > /dev/null 2>&1; do
-# 	echo "Waiting for MariaDB to be ready..."
-# 	sleep 2
-# done
-
 if [ ! -f /var/www/html/wp-config.php ]; then
 	rm -rf /var/www/html/*
 

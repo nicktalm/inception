@@ -8,12 +8,10 @@ DB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root_password}
 
 # Initialize MariaDB data directory if it doesn't exist
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "Initializing MariaDB data directory..."
     mysql_install_db --user=mysql --ldata=/var/lib/mysql > /dev/null 2>&1
 fi
 
 # Start MariaDB in the background for initial setup
-echo "Starting MariaDB..."
 mysqld_safe --bind-address=0.0.0.0 &
 sleep 10  # Give MariaDB time to start
 
@@ -25,7 +23,6 @@ done
 
 # Set up the database and user only if it hasn't been done yet
 if [ ! -f /var/lib/mysql/.setup_done ]; then
-    echo "Configuring MariaDB for WordPress..."
     mysql -u root <<MYSQL_SCRIPT
     ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB_ROOT_PASSWORD';
     CREATE DATABASE IF NOT EXISTS \`$DB_NAME\`;
@@ -36,8 +33,6 @@ MYSQL_SCRIPT
 
     touch /var/lib/mysql/.setup_done  # Prevent rerunning the setup
 fi
-
-echo "MariaDB setup complete. Running in the foreground..."
 
 # Keep MariaDB running in the foreground
 wait
