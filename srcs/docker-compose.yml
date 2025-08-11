@@ -1,55 +1,56 @@
-version: '3.8'
+version: '3.8' # Specify the Docker Compose version
 
 volumes:
-  db:
+  db: # Volume for MariaDB data persistence
     driver: local
     driver_opts:
       type: none
-      device: "~/data/mariadb"
+      device: "~/data/mariadb" # Bind to local directory for MariaDB data
       o: bind
-  wordpress:
+  wordpress: # Volume for WordPress data persistence
     driver: local
     driver_opts:
       type: none
-      device: "~/data/wordpress"
+      device: "~/data/wordpress" # Bind to local directory for WordPress data
       o: bind
 
 networks:
-  inception:
+  inception: # Define a custom network for the services
 
 services:
   nginx:
-    container_name: nginx
+    container_name: nginx # Name of the Nginx container
     build:
-      context : requirements/nginx
+      context : requirements/nginx # Path to the Nginx Dockerfile
       dockerfile: Dockerfile
     ports:
-      - "443:443"
+      - "443:443" # Expose port 443 for HTTPS
     depends_on:
-      wordpress:
+      wordpress: # Ensure WordPress is healthy before starting Nginx
         condition: service_healthy
     volumes:
-      - wordpress:/var/www/html
+      - wordpress:/var/www/html # Mount WordPress volume to Nginx
     networks:
-      - inception
+      - inception # Connect Nginx to the custom network
+
   wordpress:
-    container_name: wordpress
+    container_name: wordpress # Name of the WordPress container
     build:
-      context : requirements/wordpress
+      context : requirements/wordpress # Path to the WordPress Dockerfile
       dockerfile : Dockerfile
     healthcheck:
-      test: ["CMD", "pgrep", "php-fpm"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      test: ["CMD", "pgrep", "php-fpm"] # Check if PHP-FPM is running
+      interval: 10s # Check every 10 seconds
+      timeout: 5s # Timeout after 5 seconds
+      retries: 3 # Retry 3 times before marking as unhealthy
     depends_on:
-      mariadb:
+      mariadb: # Ensure MariaDB is healthy before starting WordPress
         condition: service_healthy
     volumes:
-      - wordpress:/var/www/html
+      - wordpress:/var/www/html # Mount WordPress volume
     networks:
-      - inception
-    environment:
+      - inception # Connect WordPress to the custom network
+    environment: # Pass environment variables for WordPress setup
       - MARIADB_DATABASE=${MARIADB_DATABASE}
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
@@ -59,21 +60,22 @@ services:
       - WORDPRESS_TEST_USER=${WORDPRESS_TEST_USER}
       - WORDPRESS_TEST_USER_PASSWORD=${WORDPRESS_TEST_USER_PASSWORD}
       - WORDPRESS_TEST_USER_EMAIL=${WORDPRESS_TEST_USER_EMAIL}
+
   mariadb:
-    container_name: mariadb
+    container_name: mariadb # Name of the MariaDB container
     build:
-      context : requirements/mariadb
+      context : requirements/mariadb # Path to the MariaDB Dockerfile
       dockerfile : Dockerfile
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"] # Check if MariaDB is running
+      interval: 10s # Check every 10 seconds
+      timeout: 5s # Timeout after 5 seconds
+      retries: 5 # Retry 5 times before marking as unhealthy
     volumes:
-      - db:/var/lib/mysql
+      - db:/var/lib/mysql # Mount MariaDB volume for data persistence
     networks:
-      - inception
-    environment:
+      - inception # Connect MariaDB to the custom network
+    environment: # Pass environment variables for MariaDB setup
       - MARIADB_DATABASE=${MARIADB_DATABASE}
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
