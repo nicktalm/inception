@@ -27,8 +27,6 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 		--dbhost="mariadb" \
 		--allow-root
 
-	echo "Admin-Benutzername: $WORDPRESS_ADMIN_USER"
-
 	if [[ $WORDPRESS_ADMIN_USER == *admin* || $WORDPRESS_ADMIN_USER == *Admin* ]]; then
 		echo "Der Admin-Benutzername darf nicht 'admin' oder 'Admin' enthalten."
 		exit 1
